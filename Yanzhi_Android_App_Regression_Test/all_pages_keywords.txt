@@ -1,0 +1,8 @@
+*** Settings ***
+Library           AppiumLibrary
+Resource          consume_page_keywords.txt
+Resource          signin_page_keywords.txt
+Resource          hybrid_public_resource.txt
+Resource          setting_page_keywords.txt
+Resource          exprpt_page_keywords.txt
+Resource          approve_pay_page_keywords.txt

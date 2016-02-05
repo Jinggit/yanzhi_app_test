@@ -1,0 +1,105 @@
+*** Settings ***
+Resource          hybrid_common_resource.txt
+Library           AppiumLibrary    run_on_failure=AppiumLibrary.Capture Page Screenshot
+Library           String
+Resource          hybrid_public_resource.txt
+
+*** Keywords ***
+Click Submit All Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="全部提交"]
+
+Finished Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    ${num}=    Extract Number From Text    //android.widget.TextView[@resource-id="${PACKAGE}:id/tv_finshed_exprpt"]
+    Should Be Equal    ${expect_num}    ${num}
+
+Browser Finished Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@resource-id="${PACKAGE}:id/tv_finshed_exprpt"]
+
+Submitting Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    待提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[contains(@text,"待提交")]
+    Should Be Equal    ${expect_num}    ${num}
+
+Submitted Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    已提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[contains(@text,"已提交")]
+    Should Be Equal    ${expect_num}    ${num}
+
+Disagree Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    已提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[contains(@text,"被驳回")]
+    Should Be Equal    ${expect_num}    ${num}
+
+Click Create Exprpt Button
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="创建报销单"]
+
+Select All Comsume
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="全选"]
+
+Deselect All Comsume
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="反选"]
+
+Click Next Button
+    Wait and Run Keyword    Click Element    //android.widget.Button[@text="下一步"]
+
+Click Save Exprpt Button
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right_mid"]
+
+Click Change Exprpt Template
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="更换模版"]
+
+Select Template Name
+    [Arguments]    ${temp_locator}
+    Select Element In List    //android.widget.LinearLayout[android.widget.TextView[@text="选择报销单模板"]]    ${temp_locator}
+
+Input Title
+    [Arguments]    ${text}
+    Wait and Run Keyword    Input Text Native    //*[android.widget.TextView[@text="标题"]]/android.widget.EditText    ${text}
+
+Show Optinal Info
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="显示选填的信息项"]
+
+Hide Optinal Info
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="隐藏选填的信息项"]
+
+Input Remark
+    [Arguments]    ${text}
+    Wait and Run Keyword    Input Text Native    //*[android.widget.TextView[@text="备注"]]/android.widget.EditText    ${text}
+
+Add Consume On Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="添加消费记录"]
+
+Remove Consume On Exprpt
+    [Arguments]    ${consume_remark}
+    Swipe Up Element Until Element Visiable    //android.widget.LinearLayout[android.widget.RelativeLayout[android.widget.LinearLayout[android.widget.TextView[@text="${consume_remark}"]]]]    //android.widget.LinearLayout[android.widget.RelativeLayout[android.widget.LinearLayout[android.widget.TextView[@text="${consume_remark}"]]]]/android.widget.ImageView    99    1
+    Wait and Run Keyword    Click Element    //android.widget.LinearLayout[android.widget.RelativeLayout[android.widget.LinearLayout[android.widget.TextView[@text="${consume_remark}"]]]]/android.widget.ImageView
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="移除"]
+
+Create Consume On Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="新建消费记录"]
+
+Import Consume On Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="导入已有消费"]
+
+Commit Exprpt
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="提交送审"]
+
+Select Consume For Exprpt In Consume List
+    [Arguments]    ${consume_locator}
+    Select Element In List    //android.widget.LinearLayout[@resource-id="${PACKAGE}:id/list_view"]    ${consume_locator}
+
+Just Proceed Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    已提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[contains(@text,"最新支付")]
+    Should Be Equal    ${expect_num}    ${num}
+
+Unread Proceed Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    待提交报销单数量应该是
+    ${num}=    Extract Number From Text    //*[android.widget.TextView[@text="报销单"]]/android.widget.TextView[@resource-id="${PACKAGE}:id/unread_count"]
+    Should Be Equal    ${expect_num}    ${num}

@@ -1,0 +1,216 @@
+*** Settings ***
+Resource          hybrid_public_resource.txt
+Resource          hybrid_common_resource.txt
+Library           AppiumLibrary    run_on_failure=AppiumLibrary.Capture Page Screenshot
+
+*** Keywords ***
+Click Setting Button
+    Click Element By Element ID    imbutton_title_menu
+
+Click Home
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="主页"]
+
+Click My Company
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="我的企业"]
+
+Click Budget
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="预算管理"]
+
+Click Statement
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="报表"]
+
+Click Buying Travel
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="采购/差旅"]
+
+Click Config
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="设置"]
+
+Get User Department
+    ${user_department}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/user_department"]
+    [Return]    ${user_department}
+
+Get Username
+    ${username}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/username"]
+    [Return]    ${username}
+
+Input Phone Number
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/phone"]
+
+Input Fax Number
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/edtcompfax"]
+
+Input Address
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/address"]
+
+Click Exit Company
+    Click Text    解散企业
+
+Company Name Should Be
+    [Arguments]    ${name}
+    ${company_name}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/company_name"]
+    Should Be Equal    ${company_name}    ${name}
+
+Company ID Name Should Be
+    [Arguments]    ${id}
+    ${company_id}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/company_id"]
+    Should Be Equal    ${company_id}    ${id}
+
+Click Edit My Company Info
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_add"]
+
+Click Save Company Info Button
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right_left"]
+
+Input Company Name
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/company_name"]
+
+Click Add Member Icon
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right_mid"]
+
+Click Search Member Icon
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right"]
+
+Member Count Should Be
+    [Arguments]    ${expected_num}
+    ${num}=    Get User Number
+    Should Be Equal    ${num}    ${expected_num}
+
+Get User Number
+    ${user_num}=    Extract Number From Text    //android.widget.TextView[@resource-id="${PACKAGE}:id/user_num"]
+    [Return]    ${user_num}
+
+Create Invitation Link
+    Click Text    生成邀请链接
+
+Click Stop Invitation
+    Click Text    停用
+
+Click Copy Link
+    Click Text    复制链接
+
+Click Send Email
+    Click Text    发送邮件
+
+Click Send SMS
+    Click Text    发送短信
+
+Click Share Wechat
+    Click Text    微信分享
+
+Login Wechat
+    [Arguments]    ${wechat_account}    ${wechat_password}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[contains(@text,"QQ号")]
+    Wait and Run Keyword    Input Text Native    //*[android.widget.TextView[contains(@text,"密 \ \ 码")]]/android.widget.EditText
+    Wait and Run Keyword    Click Text Button    登录
+
+Get Name Of Member Privilege Info
+    ${name}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/name"]
+    [Return]    ${name}
+
+Get Nickname Of Member Privilege Info
+    ${nickname}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/nick_name"]
+    [Return]    ${nickname}
+
+Get Department Of Member Privilege Info
+    ${department}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/department"]
+    [Return]    ${department}
+
+Get Userphone Of Member Privilege Info
+    ${userphone}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/user_phone"]
+    [Return]    ${userphone}
+
+Get Useremail Of Member Privilege Info
+    ${useremail}=    Get Statictext Value    //android.widget.TextView[@resource-id="${PACKAGE}:id/user_mail"]
+    [Return]    ${useremail}
+
+Click Edit Member Info Icon
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/first_or_edit"]
+
+Click Edit Privilege
+    Select Element In List    //android.widget.ScrollView[@resource-id="${PACKAGE}:id/my_scrollview"]    //android.widget.TextView[@text="修改权限"]
+
+Get Userphone Of Personal Info Edit
+    ${userphone}=    Extract Number From Text    //android.widget.TextView[@resource-id="${PACKAGE}:id/phone"]
+    [Return]    ${userphone}
+
+Get Username Of Personal Info Edit
+    ${username}=    Get Statictext Value    //android.widget.EditText[@resource-id="${PACKAGE}:id/username"]
+    [Return]    ${username}
+
+Edit Username Of Personal Info Edit
+    [Arguments]    ${username}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/username"]    ${username}
+
+Change Userphone
+    [Arguments]    ${current_user_password}
+    Click Text    更改绑定手机
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/sug"]    ${current_user_password}
+    Click Text    下一步
+    Click Text Button    获取验证码
+    ${code}=    Get Code
+    Input Verification Code Of Personal Info Edit    ${code}
+
+Input Verification Code Of Personal Info Edit
+    [Arguments]    ${code}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/edit_code"]    ${code}
+
+Get Department Of Personal Info Edit
+    ${department}=    Get Statictext Value    //android.widget.EditText[@resource-id="${PACKAGE}:id/department"]
+    [Return]    ${department}
+
+Change Department Of Personal Info Edit
+    [Arguments]    ${department}
+    Wait and Run Keyword    Click Element    //android.widget.EditText[@resource-id="${PACKAGE}:id/department"]
+    Select Element In List    //android.widget.LinearLayout[@resource-id="${PACKAGE}:id/list_view"]    //android.widget.TextView[@text="${department}"]
+
+Search Department Of Personal Info Edit
+    [Arguments]    ${department}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/title_input_view"]
+    Click Text    //android.widget.TextView[@text="${department}"]
+
+Get NIckname Of Personal Info Edit
+    ${nickname}=    Get Statictext Value    //android.widget.EditText[@resource-id="${PACKAGE}:id/nickname"]
+    [Return]    ${nickname}
+
+Get Email Of Personal Info Edit
+    ${email}=    Get Statictext Value    //android.widget.EditText[@resource-id="${PACKAGE}:id/edtcompfax"]
+    [Return]    ${email}
+
+Change NIckname Of Personal Info Edit
+    [Arguments]    ${nickname}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/nickname"]    ${nickname}
+
+Change Email Of Personal Info Edit
+    [Arguments]    ${email}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/edtcompfax"]    ${email}
+
+Click Payment Info Setting
+    Click Text    设置收款信息>
+
+Add Payment Info
+    [Arguments]    ${type}    ${name}    ${cardno}    ${bank_branch}
+    Click Text    添加收款人
+    Run Keyword If    '${type}' == '个人账户'    Click Text    个人账户
+    ...    ELSE    Click Text    对公账户
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/cardPersonName"]    ${name}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/cardId"]    ${cardno}
+    Wait and Run Keyword    Input Text Native    //android.widget.EditText[@resource-id="${PACKAGE}:id/bank_lattice_point"]    ${bank_branch}
+    Click Save Payment Info Button
+
+Set Payment Info As Default
+    [Arguments]    ${cardno}
+    Swipe Up Element Until Element Visiable    //android.widget.FrameLayout[@resource-id="${PACKAGE}:id/list_frame"]    //android.widget.TextView[@text="${cardno}"]    99    1
+    Swipe Element Horizontal From Right Hybrid    //android.widget.TextView[@text="${cardno}"]
+    Click Text    设为默认
+    ${default_value}=    Get Statictext Value    //*[android.widget.TextView[contains(@text,"${cardno}")]]/android.widget.TextView[@resource-id="${PACKAGE}:id/tv_default"]
+    Should Be Equal    ${default_value}    默认
+
+Delete Payment Info
+    [Arguments]    ${cardno}
+    Swipe Up Element Until Element Visiable    //android.widget.FrameLayout[@resource-id="${PACKAGE}:id/list_frame"]    //android.widget.TextView[@text="${cardno}"]    99    1
+    Swipe Element Horizontal From Right Hybrid    //android.widget.TextView[@text="${cardno}"]
+    Click Text    删除
+    Click Text    删除
+
+Click Save Payment Info Button
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right_mid"]

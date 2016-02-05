@@ -1,0 +1,111 @@
+*** Settings ***
+Resource          hybrid_common_resource.txt
+Library           AppiumLibrary    run_on_failure=AppiumLibrary.Capture Page Screenshot
+Library           String
+Resource          hybrid_public_resource.txt
+
+*** Keywords ***
+Click Notification
+    [Documentation]    点击待我处理的报销单图标
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right"]
+
+Unread Awaiting Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    待提交报销单数量应该是
+    ${num}=    Extract Number From Text    //*[android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right"]]/android.widget.TextView
+    Should Be Equal    ${expect_num}    ${num}
+
+Browser Approved Exprpt
+    [Documentation]    浏览已审批报销单
+    Wait and Run Keyword    Click Element    //android.widget.TextView[contains(@text,"已审批报销单")]
+
+Browser Proceeded Exprpt
+    [Documentation]    浏览已支付报销单
+    Wait and Run Keyword    Click Element    //android.widget.TextView[contains(@text,"已支付报销单")]
+
+Click Awaiting Approval Button
+    [Documentation]    点击待审批
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="待审批"]
+
+Click Awaiting Proceeded Button
+    [Documentation]    点击待支付
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="待支付"]
+
+Awaiting Approved Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    已提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[@resource-id="${PACKAGE}:id/unread_count_approval"]
+    Should Be Equal    ${expect_num}    ${num}
+
+Awaiting Proceeded Exprpt Count Should Be
+    [Arguments]    ${expect_num}
+    [Documentation]    已提交报销单数量应该是
+    ${num}=    Extract Number From Text    //android.widget.TextView[@resource-id="${PACKAGE}:id/unread_count_pay"]
+    Should Be Equal    ${expect_num}    ${num}
+
+Select Exprpt In Awaiting List
+    [Arguments]    ${exprpt_locator}
+    [Documentation]    在待审批或者待支付列表中选择报销单
+    Select Element In List    //android.widget.LinearLayout[@resource-id="${PACKAGE}:id/list_view"]    ${exprpt_locator}
+
+Click Batch Processing
+    [Documentation]    点击批量处理
+    Wait and Run Keyword    Click Element    //android.widget.ImageView[@resource-id="${PACKAGE}:id/imageview_right"]
+
+Click Agreement Button
+    [Documentation]    同意
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="同意"]
+
+Click Refuse Button
+    [Documentation]    驳回
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="驳回"]
+
+Click Pay Button
+    [Documentation]    支付
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="支付"]
+
+Click Confirmation Button
+    [Documentation]    在弹出小窗中点击确认
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="确认"]
+
+Click Cancel Button
+    [Documentation]    在弹出小窗中点击取消
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="取消"]
+
+Select Payment Method
+    [Arguments]    ${type}
+    [Documentation]    网银支付
+    ...
+    ...    现金支付
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="${type}"]
+
+Click Text To Process Exprpt After Clicking Agreement
+    [Arguments]    ${process_text}
+    [Documentation]    审批通过并支付
+    ...
+    ...    同意并转发给其他人继续审批
+    ...
+    ...    终审同意，转给出纳支付
+    ...
+    ...    同意，转给其他人继续审批
+    ...
+    ...    驳回
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="${process_text}"]
+
+Select Exprpt In Proceed List
+    [Arguments]    ${exprpt_locator}
+    [Documentation]    在已经支付的列表选择报销单
+    Select Element In List    //android.widget.FrameLayout[@resource-id="${PACKAGE}:id/list_frame"]    ${exprpt_locator}
+
+Select Exprpt In Approved List
+    [Arguments]    ${exprpt_locator}
+    [Documentation]    在已经审批的列表选择报销单
+    Select Element In List    //android.widget.LinearLayout[@resource-id="${PACKAGE}:id/list_view"]    ${exprpt_locator}
+
+Wait Utill Exprpt Loading Finished
+    [Documentation]    等待“加载中...”消失
+    Wait Until Element Disappeared    //android.widget.TextView[contains(@text,"加载中")]    ${TIMEOUT}
+
+Select Exprpt In Batch Processing List
+    [Arguments]    ${exprpt_locator}
+    Select Element In List    //android.widget.LinearLayout[@resource-id="${PACKAGE}:id/list_view"]    ${exprpt_locator}

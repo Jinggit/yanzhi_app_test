@@ -1,0 +1,19 @@
+*** Settings ***
+Resource          hybrid_common_resource.txt
+Library           AppiumLibrary    run_on_failure=AppiumLibrary.Capture Page Screenshot
+Resource          hybrid_public_resource.txt
+
+*** Keywords ***
+Login
+    [Arguments]    ${mobile}    ${password}
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="登 录"]
+    Wait and Run Keyword    Input Text Native    //android.widget.LinearLayout[android.widget.TextView[@text="手机号"]]/android.widget.EditText    ${mobile}
+    Wait and Run Keyword    Input Text Native    //android.widget.LinearLayout[android.widget.TextView[@text="密　码"]]/android.widget.EditText    ${password}
+    Wait and Run Keyword    Click Element    //android.widget.TextView[@text="登 录"]
+    SleepApp
+
+Swipe Left Skip Welcome
+    Wait Until Page Contains Element    //*[@resource-id="${PACKAGE}:id/viewPager_first"]
+    :FOR    ${index}    IN RANGE    2
+    \    AppiumLibrary.Swipe    0.9    0.5    0.1    0.5    500
+    \    Sleep    3
